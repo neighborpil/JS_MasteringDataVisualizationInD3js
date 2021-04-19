@@ -70,3 +70,31 @@ const y = d3.scaleLinear()
 y(100) // input을 output으로
 v.invert(48.3) // output을 input으로 
 ```
+
+#### Log Scale
+ - 지수단위로 급격하게 변화하는 데이터를 보여주는데 좋다
+ - base value를 10으로 하면 1, 10, 100, 1000 이 동일한 간격으로 표시
+ - 0을 포함하는 값이면 하면 안된다.(수렴하지 0에 도달하지는 않으므로)
+```
+const y = d3.scaleLinear()
+  .domain([0, 828]) // input 범위
+  .range([0, 400]) // output 범위
+  .base(10) // log 및 값
+
+y(100) // input을 output으로
+v.invert(48.3) // output을 input으로 
+```
+### Time Scale
+ - Linear Scale과 동일하나, input값이 시간값이다
+ - Javascript Date Object를 사용한다
+```
+const y = d3.scaleLinear()
+  .domain([
+    new Date(2000, 0, 1), // 시작일
+    new Date(2001, 0, 1) // 종료일
+   ]) // input 범위
+  .range([0, 400]) // output 범위
+
+y(100) // input을 output으로
+v.invert(48.3) // output을 input으로 
+```
