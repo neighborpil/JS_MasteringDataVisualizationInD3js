@@ -57,3 +57,16 @@ d3.tsv("data/ages.tsv").then(data => {});
 ```
 d3.json("data/ages.json").then(data => {});
 ```
+
+### Scale
+ - input된 데이터의 범위를 한정 및 변환하여 output으로 바꾸어준다
+
+#### Linear Scale
+```
+const y = d3.scaleLinear()
+  .domain([0, 828]) // input 범위
+  .range([0, 400]) // output 범위
+
+y(100) // input을 output으로
+v.invert(48.3) // output을 input으로 
+```
