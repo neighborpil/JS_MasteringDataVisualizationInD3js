@@ -41,3 +41,19 @@ circles.enter().append('circle')
     .attr('r', (d) => d) // d: 아이템
     .attr('fill', "blue")
 ```
+
+
+### 외부 데이터 불러오기
+ - 아래의 csv, tsv, json메소드를실행하여 데이터가 있으면 then()이 실행됨
+ - .csv : Comma Separated Values
+```
+d3.csv("data/ages.csv").then(data => {});
+```
+ - .tsv : Tab Seperated Values
+```
+d3.tsv("data/ages.tsv").then(data => {});
+```
+ - .json : Javascript Object Notation
+```
+d3.json("data/ages.json").then(data => {});
+```
