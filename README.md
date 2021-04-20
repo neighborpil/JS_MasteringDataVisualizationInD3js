@@ -84,7 +84,7 @@ const y = d3.scaleLog()
 y(100) // input을 output으로
 v.invert(48.3) // output을 input으로 
 ```
-### Time Scale
+#### Time Scale
  - Linear Scale과 동일하나, input값이 시간값이다
  - Javascript Date Object를 사용한다
 ```
@@ -99,7 +99,7 @@ y(100) // input을 output으로
 v.invert(48.3) // output을 input으로 
 ```
 
-### Ordinal Scale
+#### Ordinal Scale
  - 색깔의 범위를 주고 싶을 때 사용
  - domain과 range의 인덱스에 따라서 매핑
  - 만약에 domain에 없는 값을 사용하였을 경우, 자동으로 domain에 추가된다
@@ -130,7 +130,7 @@ const y = d3.scaleOrdinal()
 color("ASIA") // "#9467bc"
 ```
 
-### Band Scales
+#### Band Scales
  - 아이템의 개수에 따라 가로의 간격을 조절
  - PaddingInner: 0 ~ 1.0
  - PaddingOuter: 0 ~ 1.0
@@ -145,4 +145,64 @@ const y = d3.scaleBand()
 
 x("S.AMERICA") // "209", input을 output으로
 x.bandwidth() // 하나의 가로 간격 표시
+```
+
+#### MIN, MAX and EXTENT 설정
+ - domain에 모든 값들을 하나하나 설정하기 힘듬
+ - min, max값으로 시작, 끝값 잡아두면 편함
+ - extent는 배열로 [최소값, 최대값]을 나타냄
+ - map은 discrete data를 나타냄
+※ discrete data(이산형 데이터) : 양적이 값이 아닌 카테고리를 나타내는 값
+```
+const data = [
+ { grade: "A", value: 3 },
+ { grade: "B", value: 5 },
+ { grade: "C", value: 2 } 
+]
+
+const min = d3.min(data, d => d.value) // 2
+const max = d3.max(data, d => d.value) // 5
+const extent = d3.extent(data, d => d.value) // [2, 5]
+const grade = data.map(d => d.grade) // ["A", "B", "C"]
+
+const y = d3.scaleLinear()
+  .domain([
+    d3.min(data, d => d.value),
+    d3.max(data, d => d.value)
+  ])
+  .range([0, 400])
+  
+
+const y = d3.scaleLinear()
+  .domain(d3.extent(data, d => d.value)
+  .range([0, 400])
+
+
+const y = d3.scaleLinear()
+  .domain(d3.map(data, d => d.grade)
+  .range([0, 400])
+```
+## SVG Groups
+#### transform
+ - 그룹으로 묶어서 그룹 내 모든 객체를 움직이기 위해 사용
+```
+<svg width="600" height="600">
+  <g transform="translate(200, 0)">
+    <rect x="20" y="20" width="50" height="50" fill='blue"></rect>
+    <rect x="80" y="80" width="50" height="50" fill='blue"></rect>
+  </g>
+</svg>
+```
+#### d3에서의 그루핑
+```
+const MARGIN = { LEFT: 10, RIGHT: 10, TOP: 10, BOTTOM: 10 }
+const WIDTH = 960 - MARGIN.LEFT - MARGIN.RIGHT
+const HEIGHT = 500 - MARGIN.TOP - MARGIN.BOTTOM
+
+const g = d3.select("#chart-area").append("svg")
+  .attr("width", WIDTH + MARGIN.LEFT + MARGIN.RIGHT)
+  .attr("height", HEIGHT + MARGIN.TOP + MARGIN.BOTTOM)
+.append("g")
+  .attr("transform", `translate(${MARGIN-LEFT}, ${MARGIN.TOP})`)
+  
 ```
