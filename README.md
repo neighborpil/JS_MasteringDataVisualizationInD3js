@@ -76,7 +76,7 @@ v.invert(48.3) // output을 input으로
  - base value를 10으로 하면 1, 10, 100, 1000 이 동일한 간격으로 표시
  - 0을 포함하는 값이면 하면 안된다.(수렴하지 0에 도달하지는 않으므로)
 ```
-const y = d3.scaleLinear()
+const y = d3.scaleLog()
   .domain([0, 828]) // input 범위
   .range([0, 400]) // output 범위
   .base(10) // log 및 값
@@ -84,11 +84,11 @@ const y = d3.scaleLinear()
 y(100) // input을 output으로
 v.invert(48.3) // output을 input으로 
 ```
-### Time Scale
+#### Time Scale
  - Linear Scale과 동일하나, input값이 시간값이다
  - Javascript Date Object를 사용한다
 ```
-const y = d3.scaleLinear()
+const y = d3.scaleTime()
   .domain([
     new Date(2000, 0, 1), // 시작일
     new Date(2001, 0, 1) // 종료일
@@ -97,4 +97,112 @@ const y = d3.scaleLinear()
 
 y(100) // input을 output으로
 v.invert(48.3) // output을 input으로 
+```
+
+#### Ordinal Scale
+ - 색깔의 범위를 주고 싶을 때 사용
+ - domain과 range의 인덱스에 따라서 매핑
+ - 만약에 domain에 없는 값을 사용하였을 경우, 자동으로 domain에 추가된다
+ - 만약 domain의 개수가 range보다 많으면 자동으로 range의 인덱스가 0부터 갱신하여 값을 반환한다
+ - invert메소드가 없다
+ - 기본 제공 컬러
+   + d3.schemeCategory10
+   + d3.schemeCategory20
+   + d3.schemeCategory20b
+   + d3.schemeCategory20c
+```
+const y = d3.scaleOrdinal()
+  .domain([
+    "AFICAL", "N. AMERICA", "EUROPE", "S.AMERICA", "ASIA", "ASTRALASIA"
+   ]) // input 범위
+  .range([
+    "RED", "ORANGE", "YELLOW", "GREEN", "BLUE", "INDIGO", "GREY"
+  ]) // output 범위
+
+color("ASIA") // "BLUE", input을 output으로
+-----
+const y = d3.scaleOrdinal()
+  .domain([
+    "AFICAL", "N. AMERICA", "EUROPE", "S.AMERICA", "ASIA", "ASTRALASIA"
+   ]) 
+  .range(d3.chemeCategory10) // 기본으로 제공하는 컬러
+
+color("ASIA") // "#9467bc"
+```
+
+#### Band Scales
+ - 아이템의 개수에 따라 가로의 간격을 조절
+ - PaddingInner: 0 ~ 1.0
+ - PaddingOuter: 0 ~ 1.0
+```
+const y = d3.scaleBand()
+  .domain([
+    "AFICAL", "N. AMERICA", "EUROPE", "S.AMERICA", "ASIA", "ASTRALASIA"
+   ]) // input 범위
+  .range([0, 400]) // output 범위
+  .paddingInner(0.3)
+  .paddingOuter(0.2)
+
+x("S.AMERICA") // "209", input을 output으로
+x.bandwidth() // 하나의 가로 간격 표시
+```
+
+#### MIN, MAX and EXTENT 설정
+ - domain에 모든 값들을 하나하나 설정하기 힘듬
+ - min, max값으로 시작, 끝값 잡아두면 편함
+ - extent는 배열로 [최소값, 최대값]을 나타냄
+ - map은 discrete data를 나타냄
+※ discrete data(이산형 데이터) : 양적이 값이 아닌 카테고리를 나타내는 값
+```
+const data = [
+ { grade: "A", value: 3 },
+ { grade: "B", value: 5 },
+ { grade: "C", value: 2 } 
+]
+
+const min = d3.min(data, d => d.value) // 2
+const max = d3.max(data, d => d.value) // 5
+const extent = d3.extent(data, d => d.value) // [2, 5]
+const grade = data.map(d => d.grade) // ["A", "B", "C"]
+
+const y = d3.scaleLinear()
+  .domain([
+    d3.min(data, d => d.value),
+    d3.max(data, d => d.value)
+  ])
+  .range([0, 400])
+  
+
+const y = d3.scaleLinear()
+  .domain(d3.extent(data, d => d.value)
+  .range([0, 400])
+
+
+const y = d3.scaleLinear()
+  .domain(d3.map(data, d => d.grade)
+  .range([0, 400])
+```
+## SVG Groups
+#### transform
+ - 그룹으로 묶어서 그룹 내 모든 객체를 움직이기 위해 사용
+```
+<svg width="600" height="600">
+  <g transform="translate(200, 0)">
+    <rect x="20" y="20" width="50" height="50" fill='blue"></rect>
+    <rect x="80" y="80" width="50" height="50" fill='blue"></rect>
+  </g>
+</svg>
+```
+#### d3에서의 그루핑
+```
+const MARGIN = { LEFT: 10, RIGHT: 10, TOP: 10, BOTTOM: 10 }
+const WIDTH = 960 - MARGIN.LEFT - MARGIN.RIGHT
+const HEIGHT = 500 - MARGIN.TOP - MARGIN.BOTTOM
+
+const g = d3.select("#chart-area").append("svg")
+  .attr("width", WIDTH + MARGIN.LEFT + MARGIN.RIGHT)
+  .attr("height", HEIGHT + MARGIN.TOP + MARGIN.BOTTOM)
+.append("g")
+  .attr("transform", `translate(${MARGIN-LEFT}, ${MARGIN.TOP})`)
+  
 ```
