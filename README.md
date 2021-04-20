@@ -24,7 +24,7 @@ rect.attr("fill", "blue")
 
 ### D3 Array 데이터 불러오기
  - .data(변수명) 방식으로 불러오고
- - .enter() 방식으로 여러개 등록 가능(람다 필요)
+ - .enter() 방식으로 여러개 등록 가능(람다 )
 ```
 const data = [25, 20, 10, 12, 15]
 
@@ -204,5 +204,33 @@ const g = d3.select("#chart-area").append("svg")
   .attr("height", HEIGHT + MARGIN.TOP + MARGIN.BOTTOM)
 .append("g")
   .attr("transform", `translate(${MARGIN-LEFT}, ${MARGIN.TOP})`)
+  
+```
+
+## Axis
+#### Axis Generators
+ - 축을 설정한다
+```
+const leftAxis = d3.axisLeft(yScale)
+g.append("g")
+  .attr("class", "left axis")
+  .call(leftAxis)
+  
+const topAxis = d3.axisTop(xScale)
+g.append("g")
+  .attr("class", "top axis")
+  .call(topAxis)
+
+const bottomAxis = d3.axisBottom(xScale)
+g.append("g")
+  .attr("class", "bottom axis")
+  .attr("transform", `translate(0, ${HEIGHT})`)
+  .call(bottomAxis)
+
+const rightAxis = d3.axisRight(yScale)
+g.append("g")
+  .attr("class", "right axis")
+  .attr("transform", `translate(0, ${WIDTH})`)
+  .call(rightAxis)
   
 ```
