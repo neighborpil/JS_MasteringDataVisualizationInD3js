@@ -129,3 +129,20 @@ const y = d3.scaleOrdinal()
 
 color("ASIA") // "#9467bc"
 ```
+
+### Band Scales
+ - 아이템의 개수에 따라 가로의 간격을 조절
+ - PaddingInner: 0 ~ 1.0
+ - PaddingOuter: 0 ~ 1.0
+```
+const y = d3.scaleBand()
+  .domain([
+    "AFICAL", "N. AMERICA", "EUROPE", "S.AMERICA", "ASIA", "ASTRALASIA"
+   ]) // input 범위
+  .range([0, 400]) // output 범위
+  .paddingInner(0.3)
+  .paddingOuter(0.2)
+
+x("S.AMERICA") // "209", input을 output으로
+x.bandwidth() // 하나의 가로 간격 표시
+```
