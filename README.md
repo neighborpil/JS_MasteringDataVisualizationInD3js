@@ -234,3 +234,42 @@ g.append("g")
   .call(rightAxis)
   
 ```
+
+## Tick
+#### Tick Sizing and Spacing
+ - 바깥쪽에 선언된 것이 먼저 선언된 것을 취소시킨다
+```
+d3.axisButtom(xScale)
+  .tickSize(VALUE) // 안쪽 바깥쪽 둘 다
+  
+d3.axisButtom(xScale)
+  .tickSizeOuter(VALUE) // 바깥쪽
+  
+d3.axisButtom(xScale)
+  .tickSizeInner(VALUE) // 안쪽
+
+```
+#### How many
+```
+d3.axisBottom(xScale)
+  .ticks(10)
+```
+#### Text Format
+```
+d3.axisBottom(xScale) // floating point num, no dcimal points
+  .tickFormat(d3.format(",.0f"))
+
+
+d3.axisBottom(xScale) // Custom formatting
+  .tickFormat(d => {
+    return "Tick Text
+  })
+```
+
+#### Explicit values
+```
+d3.axisBottom(xScale)
+  .tickValues([1, 2, 3, 4, 5, 10, 20])
+```
+
+##
