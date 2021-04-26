@@ -236,6 +236,7 @@ g.append("g")
 ```
 
 ## Tick
+ - 축 안의 눈금 의 간격
 #### Tick Sizing and Spacing
  - 바깥쪽에 선언된 것이 먼저 선언된 것을 취소시킨다
 ```
