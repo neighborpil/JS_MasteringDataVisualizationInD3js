@@ -95,7 +95,7 @@ const y = d3.scaleTime()
    ]) // input 범위
   .range([0, 400]) // output 범위
 
-y(100) // input을 output으로
+y(new Date(2000, 7, 1)) // input을 output으로
 v.invert(48.3) // output을 input으로 
 ```
 
