@@ -273,4 +273,6 @@ d3.axisBottom(xScale)
   .tickValues([1, 2, 3, 4, 5, 10, 20])
 ```
 
-##
+#### ※ Color picker
+ - colorbrewer2.org
+
