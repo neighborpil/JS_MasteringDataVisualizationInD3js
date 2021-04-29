@@ -24,7 +24,7 @@ rect.attr("fill", "blue")
 
 ### D3 Array 데이터 불러오기
  - .data(변수명) 방식으로 불러오고
- - .enter() 방식으로 여러개 등록 가능(람다 )
+ - .enter() 방식으로 여러개의 노드들을 화면에 일괄 등록
 ```
 const data = [25, 20, 10, 12, 15]
 
@@ -222,10 +222,10 @@ const g = d3.select("#chart-area").append("svg")
 #### Axis Generators
  - 축을 설정한다
 ```
-const leftAxis = d3.axisLeft(yScale)
+const leftAxis = d3.axisLeft(yScale) // 축을 설정하고
 g.append("g")
-  .attr("class", "left axis")
-  .call(leftAxis)
+  .attr("class", "left axis") // class는 의미가 없다. 하지만 어떤일을 하는지 명확하게 할대 
+  .call(leftAxis) // 화면에 표시한다
   
 const topAxis = d3.axisTop(xScale)
 g.append("g")
@@ -235,13 +235,13 @@ g.append("g")
 const bottomAxis = d3.axisBottom(xScale)
 g.append("g")
   .attr("class", "bottom axis")
-  .attr("transform", `translate(0, ${HEIGHT})`)
+  .attr("transform", `translate(0, ${HEIGHT})`) // bottomAxis를 사용하려면 반드시 translate필요
   .call(bottomAxis)
 
 const rightAxis = d3.axisRight(yScale)
 g.append("g")
   .attr("class", "right axis")
-  .attr("transform", `translate(0, ${WIDTH})`)
+  .attr("transform", `translate(0, ${WIDTH})`) // rightAxis를 사용하려면 반드시 translate필요
   .call(rightAxis)
   
 ```
@@ -287,3 +287,42 @@ d3.axisBottom(xScale)
 #### ※ Color picker
  - colorbrewer2.org
 
+## Update 
+ - 데이터를 동적으로 움직이게 하기 위하여 사용
+ - interval함수를 이용하여 주기적으로 데이터를 갱신
+```
+
+d3.interval(() => {
+  update(data);
+}, 1000)
+```
+ - 한번만 불러오는 것(축, label, 데이터 로딩 등)을 분리하여 interval내에서 동적으로 필요한 부분만 적용
+
+### D3 Update Pattern
+ - d3에 Object를 선택하면(selectAll) 내부적으로 3가지 그룹을 포함하고 있다
+   + _enter: data array안에 있지만 화면에 표시되지 않은 것
+   + _exit: 화면에는 있지만 data array에는 없는 것, 화면에서 제거되어야 함
+   + _groups: 화면에 존재하는 모든 object
+
+ - 업데이트하기 위해서는 아래의 패턴을 따라야 한다
+   1. Data Join - select all matching elements on the screen with selectAll, and update the data that we're using.
+```
+const text = svg.selectAll("text")
+  .data(data)
+```
+   2. Exit - use the exit() selector to remove the elements that don't exist in our new array of data.
+```
+text.exit().remove()
+```
+   3. Update - set attributes for existing elements on the screen.
+```
+text.attr('fill', 'red')
+```
+   4. Enter - use the enter() selector to set attributes for new items in our data array. 
+```
+rects.enter().append("text")
+  .attr("x", (d, i) => i* 32)
+  .attr("y", 0)
+  .attr("fill", "green")
+  .text(d => d);
+```
