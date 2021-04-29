@@ -197,6 +197,12 @@ const y = d3.scaleLinear()
  - svg함수와 동일
  - transform으로 묶인 그룹을 x, y만큼 이동
  - 좌표계는 좌측 위가 (0,0)이므로 이를 중심으로 이동
+ - label등을 표시하기 위하여 margin을 줄 때 사용
+```
+.append("g")
+  .attr("transform", `translate(${MARGIN-LEFT}, ${MARGIN.TOP})`)
+```
+ - 좌표계가 bottomAxis, rightAxis등으로 바뀔 때 사용
 
 ### d3에서의 그루핑
 ```
