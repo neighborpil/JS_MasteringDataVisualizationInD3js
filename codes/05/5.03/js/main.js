@@ -81,13 +81,34 @@ function update(data) {
     .tickFormat(d => `$${d}`)
   yAxisGroup.call(yAxisCall)
 
-  // const rects = g.selectAll("rect")
-  //   .data(data)
+  // JOIN new data with old elements
+  const rects = g.selectAll("rect")
+    .data(data)
 
-  // rects.enter().append("rect")
-  //   .attr("y", d => y(d.revenue))
-  //   .attr("x", (d) => x(d.month))
-  //   .attr("width", x.bandwidth)
-  //   .attr("height", d => HEIGHT - y(d.revenue))
-  //   .attr("fill", "grey")
+  console.log(rects);
+  /*
+  rects 안에는 3가지 Array가 있다
+  _enter: data array안에 있지만 화면에 표시되지 않은 것
+  _exit: 화면에는 있지만 data array에는 없는 것, 화면에서 제거되어야 함
+  _groups: 화면에 존재하는 모든 object
+  */
+
+  // EXIT old elements not present in new data
+  rects.exit().remove()
+
+  // UPDATE old elements present in new data
+  rects.enter().append("rect")
+    .attr("y", d => y(d.revenue))
+    .attr("x", (d) => x(d.month))
+    .attr("width", x.bandwidth)
+    .attr("height", d => HEIGHT - y(d.revenue))
+    .attr("fill", "grey")
+
+  // ENTER new elements present in new data
+  rects.enter().append("rect")
+    .attr("y", d => y(d.revenue))
+    .attr("x", (d) => x(d.month))
+    .attr("width", x.bandwidth)
+    .attr("height", d => HEIGHT - y(d.revenue))
+    .attr("fill", "grey")
 }
