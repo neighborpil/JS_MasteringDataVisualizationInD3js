@@ -183,7 +183,7 @@ const y = d3.scaleLinear()
   .range([0, 400])
 ```
 ## SVG Groups
-#### transform
+### transform
  - 그룹으로 묶어서 그룹 내 모든 객체를 움직이기 위해 사용
 ```
 <svg width="600" height="600">
@@ -193,7 +193,12 @@ const y = d3.scaleLinear()
   </g>
 </svg>
 ```
-#### d3에서의 그루핑
+#### translate(x, y)
+ - svg함수와 동일
+ - transform으로 묶인 그룹을 x, y만큼 이동
+ - 좌표계는 좌측 위가 (0,0)이므로 이를 중심으로 이동
+
+### d3에서의 그루핑
 ```
 const MARGIN = { LEFT: 10, RIGHT: 10, TOP: 10, BOTTOM: 10 }
 const WIDTH = 960 - MARGIN.LEFT - MARGIN.RIGHT
