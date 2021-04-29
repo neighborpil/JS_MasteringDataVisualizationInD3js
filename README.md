@@ -24,7 +24,7 @@ rect.attr("fill", "blue")
 
 ### D3 Array 데이터 불러오기
  - .data(변수명) 방식으로 불러오고
- - .enter() 방식으로 여러개 등록 가능(람다 필요)
+ - .enter() 방식으로 여러개 등록 가능(람다 )
 ```
 const data = [25, 20, 10, 12, 15]
 
@@ -95,7 +95,7 @@ const y = d3.scaleTime()
    ]) // input 범위
   .range([0, 400]) // output 범위
 
-y(100) // input을 output으로
+y(new Date(2000, 7, 1)) // input을 output으로
 v.invert(48.3) // output을 input으로 
 ```
 
@@ -183,7 +183,7 @@ const y = d3.scaleLinear()
   .range([0, 400])
 ```
 ## SVG Groups
-#### transform
+### transform
  - 그룹으로 묶어서 그룹 내 모든 객체를 움직이기 위해 사용
 ```
 <svg width="600" height="600">
@@ -193,7 +193,12 @@ const y = d3.scaleLinear()
   </g>
 </svg>
 ```
-#### d3에서의 그루핑
+#### translate(x, y)
+ - svg함수와 동일
+ - transform으로 묶인 그룹을 x, y만큼 이동
+ - 좌표계는 좌측 위가 (0,0)이므로 이를 중심으로 이동
+
+### d3에서의 그루핑
 ```
 const MARGIN = { LEFT: 10, RIGHT: 10, TOP: 10, BOTTOM: 10 }
 const WIDTH = 960 - MARGIN.LEFT - MARGIN.RIGHT
@@ -206,3 +211,73 @@ const g = d3.select("#chart-area").append("svg")
   .attr("transform", `translate(${MARGIN-LEFT}, ${MARGIN.TOP})`)
   
 ```
+
+## Axis
+#### Axis Generators
+ - 축을 설정한다
+```
+const leftAxis = d3.axisLeft(yScale)
+g.append("g")
+  .attr("class", "left axis")
+  .call(leftAxis)
+  
+const topAxis = d3.axisTop(xScale)
+g.append("g")
+  .attr("class", "top axis")
+  .call(topAxis)
+
+const bottomAxis = d3.axisBottom(xScale)
+g.append("g")
+  .attr("class", "bottom axis")
+  .attr("transform", `translate(0, ${HEIGHT})`)
+  .call(bottomAxis)
+
+const rightAxis = d3.axisRight(yScale)
+g.append("g")
+  .attr("class", "right axis")
+  .attr("transform", `translate(0, ${WIDTH})`)
+  .call(rightAxis)
+  
+```
+
+## Tick
+ - 축 안의 눈금 의 간격
+#### Tick Sizing and Spacing
+ - 바깥쪽에 선언된 것이 먼저 선언된 것을 취소시킨다
+```
+d3.axisButtom(xScale)
+  .tickSize(VALUE) // 안쪽 바깥쪽 둘 다
+  
+d3.axisButtom(xScale)
+  .tickSizeOuter(VALUE) // 바깥쪽
+  
+d3.axisButtom(xScale)
+  .tickSizeInner(VALUE) // 안쪽
+
+```
+#### How many
+```
+d3.axisBottom(xScale)
+  .ticks(10)
+```
+#### Text Format
+```
+d3.axisBottom(xScale) // floating point num, no dcimal points
+  .tickFormat(d3.format(",.0f"))
+
+
+d3.axisBottom(xScale) // Custom formatting
+  .tickFormat(d => {
+    return "Tick Text
+  })
+```
+
+#### Explicit values
+```
+d3.axisBottom(xScale)
+  .tickValues([1, 2, 3, 4, 5, 10, 20])
+```
+
+#### ※ Color picker
+ - colorbrewer2.org
+
