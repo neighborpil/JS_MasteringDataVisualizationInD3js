@@ -304,8 +304,7 @@ d3.interval(() => {
    + _exit: 화면에는 있지만 data array에는 없는 것, 화면에서 제거되어야 함
    + _groups: 화면에 존재하는 모든 object
 
- - 업데이트하기 위해서는 아래의 패턴을 따라야 한다
-
+#### 업데이트하기 위해서는 아래의 패턴을 따라야 한다
    1. Data Join - select all matching elements on the screen with selectAll, and update the data that we're using.
 ```
 const text = svg.selectAll("text")
