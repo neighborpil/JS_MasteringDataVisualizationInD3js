@@ -305,20 +305,20 @@ d3.interval(() => {
    + _groups: 화면에 존재하는 모든 object
 
  - 업데이트하기 위해서는 아래의 패턴을 따라야 한다
-   1. Data Join - select all matching elements on the screen with selectAll, and update the data that we're using.
+   + 1. Data Join - select all matching elements on the screen with selectAll, and update the data that we're using.
 ```
 const text = svg.selectAll("text")
   .data(data)
 ```
-   2. Exit - use the exit() selector to remove the elements that don't exist in our new array of data.
+   + 2. Exit - use the exit() selector to remove the elements that don't exist in our new array of data.
 ```
 text.exit().remove()
 ```
-   3. Update - set attributes for existing elements on the screen.
+   + 3. Update - set attributes for existing elements on the screen.
 ```
 text.attr('fill', 'red')
 ```
-   4. Enter - use the enter() selector to set attributes for new items in our data array. 
+   + 4. Enter - use the enter() selector to set attributes for new items in our data array. 
 ```
 rects.enter().append("text")
   .attr("x", (d, i) => i* 32)
