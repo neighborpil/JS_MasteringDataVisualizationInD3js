@@ -9,8 +9,8 @@
  - d3.selectAll("rect") : 모든 사각형 선택
  - d3.selectAll(".outside") : class가 outside인 것 선택 - d3.selectAll(".outside") : class가 outside인 것 선택
 
-#### ※D3 attributes
-1. Rectangle
+### ※D3 attributes
+#### 1. Rectangle
   - .attr("x", 100) : 객체의 x축 좌표
   - .attr("y", 50) : 객체의 y축 좌표
   - .attr("height", 100) : 객체의 높이
