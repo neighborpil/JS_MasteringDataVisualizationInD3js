@@ -78,6 +78,18 @@ rect.attr("width", 150)
 rect.attr("height", 60)
 rect.attr("fill", "blue")
 ```
+### D3 g
+ - svg에서의 g와 동일하다
+ - 그룹을 뜻한다. 하위노드들을 같이 움직일 때사용한다
+ - 축 변경시 전체 움직여야 하니 자주 사용한다
+```
+const xAxisGroup = g.append("g")
+  .attr("class", "x axis")
+  .attr("transform", `translate(0, ${HEIGHT})`)
+
+const yAxisGroup = g.append("g")
+  .attr("class", "y axis")
+```
 
 ### D3 Array 데이터 불러오기
  - .data(변수명) 방식으로 불러오고
