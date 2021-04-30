@@ -9,6 +9,63 @@
  - d3.selectAll("rect") : 모든 사각형 선택
  - d3.selectAll(".outside") : class가 outside인 것 선택 - d3.selectAll(".outside") : class가 outside인 것 선택
 
+### ※D3 attributes
+[Document][http://www.d3noob.org/2014/02/attributes-in-d3js.html]
+#### 1. Rectangle
+  - .attr("x", 100) : 객체의 x축 좌표
+  - .attr("y", 50) : 객체의 y축 좌표
+  - .attr("height", 100) : 객체의 높이
+  - .attr("width", 200) : 객체의 너비
+```
+holder.append("rect")       // attach a rectangle
+    .attr("x", 100)         // position the left of the rectangle
+    .attr("y", 50)          // position the top of the rectangle
+    .attr("height", 100)    // set the height
+    .attr("width", 200);    // set the width
+```
+#### 2. line
+ - .attr("x1", 100) : 시작점 x축 좌표
+ - .attr("y1", 100) : 시작점 y축 좌표
+ - .attr("x2", 100) : 끝점 x축 좌표
+ - .attr("y2", 100) : 끝점 y축 좌표
+```
+holder.append("line")          // attach a line
+    .style("stroke", "black")  // colour the line
+    .attr("x1", 100)     // x1 position of the first end of the line
+    .attr("y1", 50)      // y1 position of the first end of the line
+    .attr("x2", 300)     // x2 position of the second end of the line
+    .attr("y2", 150);    // y2 position of the second end of the line
+```
+#### 4. points
+ - .attr("points", "100,50, 200,150, 300,50") : 좌표들
+```
+holder.append("polyline")      // attach a polyline
+    .style("stroke", "black")  // colour the line
+    .style("fill", "none")     // remove any fill colour
+    .attr("points", "100,50, 200,150, 300,50");  // x,y points
+```
+#### 5. Ellipse
+ - .attr("cx", 200) : 중심점 x 좌표
+ - .attr("cy", 100) : 중심점 y 좌표
+ - .attr("rx", 100) : x축 반지름
+ - .attr("ry", 50) : y축 반지름
+```
+holder.append("ellipse")       // attach an ellipse
+    .attr("cx", 200)           // position the x-centre
+    .attr("cy", 100)           // position the y-centre
+    .attr("rx", 100)           // set the x radius
+    .attr("ry", 50);           // set the y radius
+```
+#### 6. Circle
+ - .attr("cx", 200) : 중심점 x 좌표
+ - .attr("cy", 100) : 중심점 y 좌표
+ - .attr("r", 100) : 반지름
+```
+holder.append("circle")        // attach a circle
+    .attr("cx", 200)           // position the x-center
+    .attr("cy", 100)           // position the y-center
+    .attr("r", 50);            // set the radius
+```
 ### D3 Append
  - element가 선택이 되면 child 노드를 append하는 것이 가능하다
  - 선택한 elementdml attribute를 변경하는 것이 가능하다
@@ -339,4 +396,51 @@ rects.enter().append("rect")
   .transition(d3.transition().duration(500))
     .attr("y", d => y(d.revenue))
     .attr("fill-opacity", 0) // 0 : visible
+```
+
+#### merge()
+ - transition시에 ENTER와 UPDATE를 같이 표시하기 위해 사용
+ 1. Before
+```
+  // UPDATE old elements present in new data.
+  rects.transition(t)
+    .attr("y", d => y(d[value]))
+    .attr("x", (d) => x(d.month))
+    .attr("width", x.bandwidth)
+    .attr("height", d => HEIGHT - y(d[value]))
+
+  // ENTER new elements present in new data.  
+  rects.enter().append("rect")
+    .attr("x", (d) => x(d.month))
+    .attr("width", x.bandwidth)
+    .attr("fill", "grey")
+    .attr("y", y(0)) // initial value
+    .attr("height", 0) // intial value
+    .transition(t)
+      .attr("y", d => y(d[value]))
+      .attr("height", d => HEIGHT - y(d[value]))
+```
+ 2. After
+```
+  // ENTER new elements present in new data.  
+  rects.enter().append("rect")    
+    .attr("fill", "grey")
+    .attr("y", y(0)) // initial value
+    .attr("height", 0) // intial value
+    // UPDATE old elements present in new data.
+    .merge(rects)
+    .transition(t)
+      .attr("x", (d) => x(d.month))
+      .attr("width", x.bandwidth)
+      .attr("y", d => y(d[value]))
+      .attr("height", d => HEIGHT - y(d[value]))
+
+```
+
+#### ※ 데이터를 배열순서가 아닌 변수에 매칭시키기
+ - .data()함수에서 두번째 파라미터로 매칭시킬 변수를 지정한다
+ - 이렇게 하지 않으면 데이터의 배열 순서로 매칭이 되어, 2가지 이상의 데이터를 표시할 경우 배열순서가 맞지 않는다.
+```
+  const rects = g.selectAll("rect")
+    .data(data, d => d.month) // 배열의 순서가 아닌 월로 x축 레이블 매칭시키기
 ```
