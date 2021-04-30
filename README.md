@@ -10,6 +10,7 @@
  - d3.selectAll(".outside") : class가 outside인 것 선택 - d3.selectAll(".outside") : class가 outside인 것 선택
 
 ### ※D3 attributes
+[Document][http://www.d3noob.org/2014/02/attributes-in-d3js.html]
 #### 1. Rectangle
   - .attr("x", 100) : 객체의 x축 좌표
   - .attr("y", 50) : 객체의 y축 좌표
@@ -22,7 +23,49 @@ holder.append("rect")       // attach a rectangle
     .attr("height", 100)    // set the height
     .attr("width", 200);    // set the width
 ```
-
+#### 2. line
+ - .attr("x1", 100) : 시작점 x축 좌표
+ - .attr("y1", 100) : 시작점 y축 좌표
+ - .attr("x2", 100) : 끝점 x축 좌표
+ - .attr("y2", 100) : 끝점 y축 좌표
+```
+holder.append("line")          // attach a line
+    .style("stroke", "black")  // colour the line
+    .attr("x1", 100)     // x1 position of the first end of the line
+    .attr("y1", 50)      // y1 position of the first end of the line
+    .attr("x2", 300)     // x2 position of the second end of the line
+    .attr("y2", 150);    // y2 position of the second end of the line
+```
+#### 4. points
+ - .attr("points", "100,50, 200,150, 300,50") : 좌표들
+```
+holder.append("polyline")      // attach a polyline
+    .style("stroke", "black")  // colour the line
+    .style("fill", "none")     // remove any fill colour
+    .attr("points", "100,50, 200,150, 300,50");  // x,y points
+```
+#### 5. Ellipse
+ - .attr("cx", 200) : 중심점 x 좌표
+ - .attr("cy", 100) : 중심점 y 좌표
+ - .attr("rx", 100) : x축 반지름
+ - .attr("ry", 50) : y축 반지름
+```
+holder.append("ellipse")       // attach an ellipse
+    .attr("cx", 200)           // position the x-centre
+    .attr("cy", 100)           // position the y-centre
+    .attr("rx", 100)           // set the x radius
+    .attr("ry", 50);           // set the y radius
+```
+#### 6. Circle
+ - .attr("cx", 200) : 중심점 x 좌표
+ - .attr("cy", 100) : 중심점 y 좌표
+ - .attr("r", 100) : 반지름
+```
+holder.append("circle")        // attach a circle
+    .attr("cx", 200)           // position the x-center
+    .attr("cy", 100)           // position the y-center
+    .attr("r", 50);            // set the radius
+```
 ### D3 Append
  - element가 선택이 되면 child 노드를 append하는 것이 가능하다
  - 선택한 elementdml attribute를 변경하는 것이 가능하다
