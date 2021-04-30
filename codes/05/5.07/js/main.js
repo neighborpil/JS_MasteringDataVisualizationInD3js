@@ -1,7 +1,7 @@
 /*
 *    main.js
 *    Mastering Data Visualization with D3.js
-*    5.2 - Looping with intervals
+*    5.6 - Making our chart dynamic
 */
 
 const MARGIN = { LEFT: 100, RIGHT: 10, TOP: 10, BOTTOM: 100 }
@@ -35,14 +35,13 @@ const yLabel = g.append("text")
   .attr("text-anchor", "middle")
   .attr("transform", "rotate(-90)")
 
-// part that data should be loaded only once
 const x = d3.scaleBand()
   .range([0, WIDTH])
   .paddingInner(0.3)
   .paddingOuter(0.2)
 
 const y = d3.scaleLinear()
-  .range([HEIGHT, 0]);
+  .range([HEIGHT, 0])
 
 const xAxisGroup = g.append("g")
   .attr("class", "x axis")
@@ -57,23 +56,25 @@ d3.csv("data/revenues.csv").then(data => {
     d.profit = Number(d.profit)
   })
 
-  d3.interval(() =>{
+  console.log(data)
+
+  d3.interval(() => {
     flag = !flag
     update(data)
   }, 1000)
-  
-    update(data)
+
+  update(data)
 })
 
-// part that data changes dynamically
 function update(data) {
   const value = flag ? "profit" : "revenue"
+  const t = d3.transition().duration(750)
 
   x.domain(data.map(d => d.month))
-  y.domain([0, d3.max(data, (d) => d[value])])
+  y.domain([0, d3.max(data, d => d[value])])
 
   const xAxisCall = d3.axisBottom(x)
-  xAxisGroup.call(xAxisCall)
+  xAxisGroup.transition(t).call(xAxisCall)
     .selectAll("text")
       .attr("y", "10")
       .attr("x", "-5")
@@ -82,41 +83,40 @@ function update(data) {
 
   const yAxisCall = d3.axisLeft(y)
     .ticks(3)
-    .tickFormat(d => `$${d}`)
-  yAxisGroup.call(yAxisCall)
+    .tickFormat(d => d + "m")
+  yAxisGroup.transition(t).call(yAxisCall)
 
-  // JOIN new data with old elements
+  // JOIN new data with old elements.
   const rects = g.selectAll("rect")
     .data(data)
 
-  console.log(rects);
-  /*
-  rects 안에는 3가지 Array가 있다
-  _enter: data array안에 있지만 화면에 표시되지 않은 것
-  _exit: 화면에는 있지만 data array에는 없는 것, 화면에서 제거되어야 함
-  _groups: 화면에 존재하는 모든 object
-  */
+  // EXIT old elements not present in new data.
+  rects.exit()
+    .attr("fill", "red") 
+    .transition(t)
+      .attr("height", 0)
+      .attr("y", y(0))
+      .remove()
 
-  // EXIT old elements not present in new data
-  rects.exit().remove()
-
-  const color = flag ? "pink" : "gray"
-  // UPDATE old elements present in new data
-  rects
+  // UPDATE old elements present in new data.
+  rects.transition(t)
     .attr("y", d => y(d[value]))
     .attr("x", (d) => x(d.month))
     .attr("width", x.bandwidth)
     .attr("height", d => HEIGHT - y(d[value]))
-    .attr("fill", color)
 
-  // ENTER new elements present in new data
+  // ENTER new elements present in new data.  
   rects.enter().append("rect")
     .attr("y", d => y(d[value]))
     .attr("x", (d) => x(d.month))
     .attr("width", x.bandwidth)
-    .attr("height", d => HEIGHT - y(d[value]))
-    .attr("fill", color)
+    .attr("fill", "grey")
+    .attr("y", y(0))
+    .attr("height", 0)
+    .transition(t)
+      .attr("y", d => y(d[value]))
+      .attr("height", d => HEIGHT - y(d[value]))
 
-    const text = flag ? "Profit ($)" : "Revenue($)";
-    yLabel.text(text)
+  const text = flag ? "Profit ($)" : "Revenue ($)"
+  yLabel.text(text)
 }
