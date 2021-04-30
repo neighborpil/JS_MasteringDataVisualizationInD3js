@@ -11,10 +11,10 @@
 
 #### ※D3 attributes
 1. Rectangle
- - .attr("x", 100) : 객체의 x축 좌표
- - .attr("y", 50) : 객체의 y축 좌표
- - .attr("height", 100) : 객체의 높이
- - .attr("width", 200) : 객체의 너비
+  - .attr("x", 100) : 객체의 x축 좌표
+  - .attr("y", 50) : 객체의 y축 좌표
+  - .attr("height", 100) : 객체의 높이
+  - .attr("width", 200) : 객체의 너비
 ```
 holder.append("rect")       // attach a rectangle
     .attr("x", 100)         // position the left of the rectangle
