@@ -326,3 +326,17 @@ rects.enter().append("text")
   .attr("fill", "green")
   .text(d => d);
 ```
+### D3 Transitions
+ - duration을 설정함으로써 스무스하게 변경하게 해준다
+```
+rects.enter().append("rect")
+  .attr("y", d => y(d.month))
+  .attr("x", (d) => x(d.month))
+  .attr("width", x.bandwidth)
+  .attr("height", d => HEIGHT - y(d.revenue))
+  .attr("fill", "gray")
+  .attr("fill-opacity", 1) // 1 : invisible
+  .transition(d3.transition().duration(500))
+    .attr("y", d => y(d.revenue))
+    .attr("fill-opacity", 0) // 0 : visible
+```
