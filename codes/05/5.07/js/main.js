@@ -82,7 +82,7 @@ function update(data) {
       .attr("text-anchor", "end")
       .attr("transform", "rotate(-40)")
 
-  const yAxisCall = d3.axisLeft(y기
+  const yAxisCall = d3.axisLeft(y)
     .ticks(3)
     .tickFormat(d => d + "m")
   yAxisGroup.transition(t).call(yAxisCall)
