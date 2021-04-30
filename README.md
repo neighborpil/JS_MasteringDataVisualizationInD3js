@@ -9,6 +9,20 @@
  - d3.selectAll("rect") : 모든 사각형 선택
  - d3.selectAll(".outside") : class가 outside인 것 선택 - d3.selectAll(".outside") : class가 outside인 것 선택
 
+#### ※D3 attributes
+1. Rectangle
+ - .attr("x", 100) : 객체의 x축 좌표
+ - .attr("y", 50) : 객체의 y축 좌표
+ - .attr("height", 100) : 객체의 높이
+ - .attr("width", 200) : 객체의 너비
+```
+holder.append("rect")       // attach a rectangle
+    .attr("x", 100)         // position the left of the rectangle
+    .attr("y", 50)          // position the top of the rectangle
+    .attr("height", 100)    // set the height
+    .attr("width", 200);    // set the width
+```
+
 ### D3 Append
  - element가 선택이 되면 child 노드를 append하는 것이 가능하다
  - 선택한 elementdml attribute를 변경하는 것이 가능하다
