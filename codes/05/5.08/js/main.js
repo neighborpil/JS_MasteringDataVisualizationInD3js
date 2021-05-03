@@ -60,8 +60,7 @@ d3.csv("data/revenues.csv").then(data => {
 
   d3.interval(() => {
     flag = !flag
-    const newData = flag ? data : data.slice(1) // slice(1) : 앞의 1개를 제외하고 얕은 참조 배열을 새로 생성한다
-    update(newData)
+    update(data)
   }, 1000)
 
   update(data)
@@ -88,7 +87,7 @@ function update(data) {
   yAxisGroup.transition(t).call(yAxisCall)
 
   // JOIN new data with old elements.
-  const rects = g.selectAll("circle")
+  const rects = g.selectAll("rect")
     .data(data, d => d.month) // 배열의 순서가 아닌 월로 x축 레이블 매칭시키기
 
   // EXIT old elements not present in new data.
@@ -99,7 +98,7 @@ function update(data) {
       .remove()
 
   // ENTER new elements present in new data.  
-  rects.enter().append("circle")    
+  rects.enter().append("rect")    
     .attr("fill", "grey")
     .attr("cy", y(0)) // initial value
     .attr("r", 5) // intial value
