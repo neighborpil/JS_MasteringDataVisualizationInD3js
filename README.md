@@ -486,7 +486,13 @@ continents.forEach((continent, i) => {
 ## Format
  - 데이터 포맷을 정리한다
  - d3.format('포맷');
-   + .0%: rounded percentage(0.123 -> 12%)
+   + .0% : rounded percentage(0.123 -> 12%)
+   + $.2f : localized fixed-point currency(-3.5 => $3.50)
+   + +20 : space-filled and signed(+42 => "                 +42)
+   + .^20 : dot-filled and centered(42 => ".........42.........")
+   + .2s : SI-prefix with two significant digits(42e6 => 42M)
+   + #x : prefixed lowercase hexadecimal(48879 => "0xbeef")
+   + ,.2r : grouped thousands with two significant digits(4223 => 4,200)
 ```
 const formatter = d3.format(".2f")
 
@@ -494,3 +500,19 @@ formatter(1000) // 1000.00
 formatter(5.248) // 5.25
 formatter(30.1) // 30.10
 ```
+### d3 format specifier
+ - [[fill]align][sign][symbol][0][width][,][.precision][type]
+ - [sign]
+   + - : nothing for zero or positive and a minus sign for negative(Default)
+   + + : a plus sign for zero or positive and a minus for negative
+   + ( : nothing for zero or positive and parentheses for negative
+   +  (space) : a space fo zero or positive and a minus sign for negative
+ - [symbol]
+   + $ : apply currency symbols per the local definition
+   + # : for binary, octal, hexadecimal notatoin => prefix byx 0b 0o 0x, respectively
+ - [,] : adding a comma adds a group seperator(e.g. a comma for thousands)
+ - [.percision] : decimal points
+ - [type]
+   + ![image](https://user-images.githubusercontent.com/22423285/116845333-7bbf5600-ac20-11eb-89e7-e768d76a4aa7.png)
+
+ 
