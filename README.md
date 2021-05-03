@@ -531,5 +531,7 @@ parseTime("June 30, 2015")
 ```
 ![image](https://user-images.githubusercontent.com/22423285/116845620-423b1a80-ac21-11eb-8ccc-9589595c23f1.png)
 
-
+## Tooltips
+ - 3rd party addon
+ - ![image](https://user-images.githubusercontent.com/22423285/116864200-72df7c00-ac42-11eb-831e-38990f29e8d6.png)
 
