@@ -482,3 +482,15 @@ continents.forEach((continent, i) => {
         .text(continent)
 })
 ```
+
+## Format
+ - 데이터 포맷을 정리한다
+ - d3.format('포맷');
+   + .0%: rounded percentage(0.123 -> 12%)
+```
+const formatter = d3.format(".2f")
+
+formatter(1000) // 1000.00
+formatter(5.248) // 5.25
+formatter(30.1) // 30.10
+```
