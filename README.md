@@ -456,3 +456,29 @@ rects.enter().append("rect")
   const rects = g.selectAll("rect")
     .data(data, d => d.month) // 배열의 순서가 아닌 월로 x축 레이블 매칭시키기
 ```
+
+## Legend
+ - 텍스트와 rect등으로 추가
+```
+const continents = ["europe", "asia", "america", "africa"]
+
+const legend = g.append("g")
+    .attr("transform", `translate(${WIDTH - 10}, ${HEIGHT - 125})`)
+
+continents.forEach((continent, i) => {
+    const legendRow = legend.append("g")
+        .attr("transform", `translate(0, ${i * 20})`)
+
+    legendRow.append("rect")
+        .attr("width", 10)
+        .attr("height", 10)
+        .attr("fill", continentColor(continent))
+
+    legendRow.append("text")
+        .attr("x", -10)
+        .attr("y", 10)
+        .attr("text-anchor", "end")
+        .style("text-transform", "capitalize") // css 설정
+        .text(continent)
+})
+```
