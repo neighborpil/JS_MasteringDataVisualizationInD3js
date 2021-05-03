@@ -515,4 +515,21 @@ formatter(30.1) // 30.10
  - [type]
    + ![image](https://user-images.githubusercontent.com/22423285/116845333-7bbf5600-ac20-11eb-89e7-e768d76a4aa7.png)
 
- 
+### d3 Time format
+ - Formatting: Date Object => String
+
+```
+var formatTime = d3.timeFormat("%B %d %Y");
+
+formatTime(new Date()); // "June 30, 2015"
+```
+
+ - Parsing: String => Date Object
+```
+var parseTime d3.timeParse("%B %d, %Y");
+parseTime("June 30, 2015")
+```
+![image](https://user-images.githubusercontent.com/22423285/116845620-423b1a80-ac21-11eb-8ccc-9589595c23f1.png)
+
+
+
