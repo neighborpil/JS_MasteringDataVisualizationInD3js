@@ -619,3 +619,16 @@ $('#date-slider').slider({
 
 ```
 
+### bisector
+ - Locate the insertion point for x in array to maintain sorted order.
+
+```
+var data = [2, 3, 4, 5, 6, 7, 8]
+var bisect = d3.bisector(function(d) { return d.date; }).left;
+var result = bisect(data, 3); // result: 2
+```
+### dy attribute
+ - 상대적으로 한번 더 이동할 때 사용
+ - y축을 이동시킨후 이동시킨 축을 기점으로 또다시 이동할 때사용
+ - dx도 마찬가지
+ -
