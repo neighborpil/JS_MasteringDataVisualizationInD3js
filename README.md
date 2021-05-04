@@ -585,3 +585,8 @@ const continent = $('#continent-select').val()
 	})
 
 ```
+
+
+### ※ D3-tooltip
+ - 3rd party opensource lib
+ - [GitHub][https://github.com/caged/d3-tip]
