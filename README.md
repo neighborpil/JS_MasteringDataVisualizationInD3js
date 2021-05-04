@@ -590,3 +590,32 @@ const continent = $('#continent-select').val()
 ### ※ D3-tooltip
  - 3rd party opensource lib
  - [GitHub][https://github.com/caged/d3-tip]
+
+
+### Slider
+ - 외부 라이브러리를 써서 슬라이드의 값에 따라서 화면에 데이터 변화하여 표시
+```
+
+<div id="slider-div">
+	<label>Year: <span id="year">1800</span></label>
+	<div id="date-slider"></div> <!-- Slider -->
+</div>
+
+
+$('#date-slider').slider({
+	min: 1800,
+	max: 2014,
+	step: 1,
+	slide: (event, ui) => {
+		time = ui.value - 1800
+		update(formattedData[time])
+	}
+})
+
+	// update the time label
+	timeLabel.text(String(time + 1800))
+	$("#year")[0].innerHTML = String(time + 1800)
+	$("#date-slider").slider('value', Number(time + 1800))
+
+```
+
