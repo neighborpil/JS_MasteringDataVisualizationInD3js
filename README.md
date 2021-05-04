@@ -535,3 +535,53 @@ parseTime("June 30, 2015")
  - 3rd party addon
  - ![image](https://user-images.githubusercontent.com/22423285/116864200-72df7c00-ac42-11eb-831e-38990f29e8d6.png)
 
+## Interactive
+ - 이벤트 삽입 가능
+```
+let time = 0
+let interval;
+let formattedData;
+
+function step() {
+	// at the end of our data, loop back
+	time = (time < 214) ? time + 1 : 0
+	update(formattedData[time])
+}
+
+$("#play-button")
+	.on('click', function() {
+		const button = $(this)
+		if(button.text() === 'Play') {
+			button.text('Pause')
+			interval = setInterval(step, 100)
+		} else {
+			button.text('Play')
+			clearInterval(interval)
+		}
+	})
+
+$('#reset-button')
+	.on('click', () => {
+		time = 0
+		update(formattedData[0])
+	})
+
+$('#continent-select')
+	.on('change', () => {
+		update(formattedData[time])
+	})
+
+```
+ - filter로 데이터 추출 가능
+```
+const continent = $('#continent-select').val()
+
+	const filterdData = data.filter(d => {
+		if(continent === 'all')
+			return true
+		else {
+			return d.continent === continent
+		}
+	})
+
+```
