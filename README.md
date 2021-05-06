@@ -91,6 +91,18 @@ const yAxisGroup = g.append("g")
   .attr("class", "y axis")
 ```
 
+### viewBox옵션
+ - viewBox옵션을 주게 되면 chart가 responsive하게 변한다
+```
+width = 500; 
+height = 500; 
+const svg = d3 
+  .select("#chart") 
+  .append("svg") 
+  .attr("viewBox", `0 0 ${width} ${height}`)
+
+```
+
 ### D3 Array 데이터 불러오기
  - .data(변수명) 방식으로 불러오고
  - .enter() 방식으로 여러개의 노드들을 화면에 일괄 등록
