@@ -7,7 +7,27 @@
 const MARGIN = { LEFT: 20, RIGHT: 100, TOP: 50, BOTTOM: 100 }
 const WIDTH = 800 - MARGIN.LEFT - MARGIN.RIGHT
 const HEIGHT = 500 - MARGIN.TOP - MARGIN.BOTTOM
-let targetData = 'bitcoin';
+
+const targets = [
+	'bitcoin',
+	'ethereum',
+	'bitcoin_cash',
+	'litecoin',
+	'ripple',
+] 
+const types = [
+	'price_usd',
+	'market_cap',
+	'24h_vol'
+]
+let coin = {
+	target: 'bitcoin',
+	type: types[0],
+	startDate: null,
+	endDate: null
+}
+let coins = undefined
+
 const svg = d3.select("#chart-area").append("svg")
   .attr("width", WIDTH + MARGIN.LEFT + MARGIN.RIGHT)
   .attr("height", HEIGHT + MARGIN.TOP + MARGIN.BOTTOM)
@@ -52,21 +72,38 @@ const line = d3.line()
 	.x(d => x(d.year))
 	.y(d => y(d.value))
 
-d3.json("data/coins.json").then(coins => {
+d3.json("data/coins.json").then(theCoins => {
 
 	
 	// clean data
-	Object.entries(coins).forEach(coin => {
+	Object.entries(theCoins).forEach(coin => {
 
 		coin[1].forEach(c => {
+			c['24h_vol'] = Number(c['24h_vol'])
+			//c.24h_vol = Number(c.24h_vol);
 			c.market_cap = Number(c.market_cap)
 			c.price_usd = Number(c.price_usd)
 			c.date = parseTime(c.date)
 		})
 	})
 
+	coins = theCoins;
+	
+	let options = {
+		target: targets[0],
+		type: types[0],
+		startDate: d3.max(coins[targets[0]], d => d.date),
+		endDate: d3.min(coins[targets[0]], d => d.date)
+	}
+
+	changeGraph(options);
+})
+
+
+function changeGraph(options) {
+	let coin = coins[options.target]	
 	// set scale domains
-	x.domain(d3.extent(data, d => d.year))
+	x.domain(d3.extent(data, d => d.date))
 	y.domain([
 		d3.min(data, d => d.value) / 1.005, 
 		d3.max(data, d => d.value) * 1.005
@@ -131,4 +168,5 @@ d3.json("data/coins.json").then(coins => {
 	/******************************** Tooltip Code ********************************/
 
 
-})
+
+}
