@@ -529,17 +529,6 @@ formatter(30.1) // 30.10
 
 ### d3 Time format
  - Formatting: Date Object => String
-
-```
-var formatTime = d3.timeFormat("%B %d %Y");
-
-formatTime(new Date()); // "June 30, 2015"
-```
-
- - Parsing: String => Date Object
-```
-var parseTime d3.timeParse("%B %d, %Y");
-parseTime("June 30, 2015")
 ```
 %a - abbreviated weekday name.*
 %A - full weekday name.*
@@ -573,6 +562,20 @@ parseTime("June 30, 2015")
 %Y - year with century as a decimal number, such as 1999.
 %Z - time zone offset, such as -0700, -07:00, -07, or Z.
 %% - a literal percent sign (%).
+```
+
+```
+var formatTime = d3.timeFormat("%B %d %Y");
+
+formatTime(new Date()); // "June 30, 2015"
+```
+
+ - Parsing: String => Date Object
+```
+var parseTime d3.timeParse("%B %d, %Y");
+parseTime("June 30, 2015")
+```
+
 
 ## Tooltips
  - 3rd party addon
