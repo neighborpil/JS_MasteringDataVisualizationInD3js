@@ -91,6 +91,18 @@ const yAxisGroup = g.append("g")
   .attr("class", "y axis")
 ```
 
+### viewBox옵션
+ - viewBox옵션을 주게 되면 chart가 responsive하게 변한다
+```
+width = 500; 
+height = 500; 
+const svg = d3 
+  .select("#chart") 
+  .append("svg") 
+  .attr("viewBox", `0 0 ${width} ${height}`)
+
+```
+
 ### D3 Array 데이터 불러오기
  - .data(변수명) 방식으로 불러오고
  - .enter() 방식으로 여러개의 노드들을 화면에 일괄 등록
@@ -517,6 +529,40 @@ formatter(30.1) // 30.10
 
 ### d3 Time format
  - Formatting: Date Object => String
+```
+%a - abbreviated weekday name.*
+%A - full weekday name.*
+%b - abbreviated month name.*
+%B - full month name.*
+%c - the locale’s date and time, such as %x, %X.*
+%d - zero-padded day of the month as a decimal number [01,31].
+%e - space-padded day of the month as a decimal number [ 1,31]; equivalent to %_d.
+%f - microseconds as a decimal number [000000, 999999].
+%g - ISO 8601 week-based year without century as a decimal number [00,99].
+%G - ISO 8601 week-based year with century as a decimal number.
+%H - hour (24-hour clock) as a decimal number [00,23].
+%I - hour (12-hour clock) as a decimal number [01,12].
+%j - day of the year as a decimal number [001,366].
+%m - month as a decimal number [01,12].
+%M - minute as a decimal number [00,59].
+%L - milliseconds as a decimal number [000, 999].
+%p - either AM or PM.*
+%q - quarter of the year as a decimal number [1,4].
+%Q - milliseconds since UNIX epoch.
+%s - seconds since UNIX epoch.
+%S - second as a decimal number [00,61].
+%u - Monday-based (ISO 8601) weekday as a decimal number [1,7].
+%U - Sunday-based week of the year as a decimal number [00,53].
+%V - ISO 8601 week of the year as a decimal number [01, 53].
+%w - Sunday-based weekday as a decimal number [0,6].
+%W - Monday-based week of the year as a decimal number [00,53].
+%x - the locale’s date, such as %-m/%-d/%Y.*
+%X - the locale’s time, such as %-I:%M:%S %p.*
+%y - year without century as a decimal number [00,99].
+%Y - year with century as a decimal number, such as 1999.
+%Z - time zone offset, such as -0700, -07:00, -07, or Z.
+%% - a literal percent sign (%).
+```
 
 ```
 var formatTime = d3.timeFormat("%B %d %Y");
@@ -529,7 +575,7 @@ formatTime(new Date()); // "June 30, 2015"
 var parseTime d3.timeParse("%B %d, %Y");
 parseTime("June 30, 2015")
 ```
-![image](https://user-images.githubusercontent.com/22423285/116845620-423b1a80-ac21-11eb-8ccc-9589595c23f1.png)
+
 
 ## Tooltips
  - 3rd party addon
