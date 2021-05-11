@@ -36,7 +36,7 @@ const g = svg.append("g")
   .attr("transform", `translate(${MARGIN.LEFT}, ${MARGIN.TOP})`)
 
 // time parser for x-scale
-const parseTime = d3.timeParse("%m/%d/%Y")
+const parseTime = d3.timeParse("%d/%m/%Y")
 // for tooltip
 const bisectDate = d3.bisector(d => d.year).left
 
@@ -67,10 +67,7 @@ yAxis.append("text")
 	.attr("fill", "#5D6971")
 	.text("Population)")
 
-// line path generator
-const line = d3.line()
-	.x(d => x(d.year))
-	.y(d => y(d.value))
+
 
 d3.json("data/coins.json").then(theCoins => {
 
@@ -78,16 +75,22 @@ d3.json("data/coins.json").then(theCoins => {
 	// clean data
 	Object.entries(theCoins).forEach(coin => {
 
-		coin[1].forEach(c => {
-			c['24h_vol'] = Number(c['24h_vol'])
-			//c.24h_vol = Number(c.24h_vol);
-			c.market_cap = Number(c.market_cap)
-			c.price_usd = Number(c.price_usd)
-			c.date = parseTime(c.date)
-		})
+		for(let i=coin[1].length-1; i>=0;i--){
+			let value = coin[1][i];
+			if(value['24h_vol'] && value.market_cap && value.price_usd && value.date) {
+				value['24h_vol'] = Number(value['24h_vol'])
+				//c.24h_vol = Number(c.24h_vol);
+				value.market_cap = Number(value.market_cap)
+				value.price_usd = Number(value.price_usd)
+				value.date = parseTime(value.date)
+			} else {
+				coin[1].splice(i, 1);
+			}
+		}
 	})
 
 	coins = theCoins;
+
 	
 	let options = {
 		target: targets[0],
@@ -101,18 +104,21 @@ d3.json("data/coins.json").then(theCoins => {
 
 
 function changeGraph(options) {
-	let coin = coins[options.target]	
+	let data= coins[options.target]
 	// set scale domains
 	x.domain(d3.extent(data, d => d.date))
 	y.domain([
-		d3.min(data, d => d.value) / 1.005, 
-		d3.max(data, d => d.value) * 1.005
+		d3.min(data, d => d[options.type]) / 1.005, 
+		d3.max(data, d => d[options.type]) * 1.005
 	])
 
 	// generate axes once scales have been set
 	xAxis.call(xAxisCall.scale(x))
 	yAxis.call(yAxisCall.scale(y))
-
+	// line path generator
+	let line = d3.line()
+		.x(d => x(d.date))
+		.y(d => y(d[options.type]))
 	// add line to chart
 	g.append("path")
 		.attr("class", "line")
@@ -158,11 +164,11 @@ function changeGraph(options) {
 		const i = bisectDate(data, x0, 1)
 		const d0 = data[i - 1]
 		const d1 = data[i]
-		const d = x0 - d0.year > d1.year - x0 ? d1 : d0
-		focus.attr("transform", `translate(${x(d.year)}, ${y(d.value)})`)
-		focus.select("text").text(d.value)
+		const d = x0 - d0.date > d1.date - x0 ? d1 : d0
+		focus.attr("transform", `translate(${x(d.date)}, ${y(d[options.type])})`)
+		focus.select("text").text(d[options.type])
 		focus.select(".x-hover-line").attr("y2", HEIGHT - y(d.value))
-		focus.select(".y-hover-line").attr("x2", -x(d.year))
+		focus.select(".y-hover-line").attr("x2", -x(d.date))
 	}
 	
 	/******************************** Tooltip Code ********************************/
