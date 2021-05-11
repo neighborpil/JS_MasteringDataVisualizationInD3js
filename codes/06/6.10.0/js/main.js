@@ -38,7 +38,7 @@ const g = svg.append("g")
 // time parser for x-scale
 const parseTime = d3.timeParse("%d/%m/%Y")
 // for tooltip
-const bisectDate = d3.bisector(d => d.year).left
+const bisectDate = d3.bisector(d => d.date).left
 
 // scales
 const x = d3.scaleTime().range([0, WIDTH])
@@ -95,8 +95,8 @@ d3.json("data/coins.json").then(theCoins => {
 	let options = {
 		target: targets[0],
 		type: types[0],
-		startDate: d3.max(coins[targets[0]], d => d.date),
-		endDate: d3.min(coins[targets[0]], d => d.date)
+		startDate: d3.min(coins[targets[0]], d => d.date),
+		endDate: d3.max(coins[targets[0]], d => d.date)
 	}
 
 	changeGraph(options);
@@ -167,7 +167,7 @@ function changeGraph(options) {
 		const d = x0 - d0.date > d1.date - x0 ? d1 : d0
 		focus.attr("transform", `translate(${x(d.date)}, ${y(d[options.type])})`)
 		focus.select("text").text(d[options.type])
-		focus.select(".x-hover-line").attr("y2", HEIGHT - y(d.value))
+		focus.select(".x-hover-line").attr("y2", HEIGHT - y(d[options.type]))
 		focus.select(".y-hover-line").attr("x2", -x(d.date))
 	}
 	
@@ -176,3 +176,8 @@ function changeGraph(options) {
 
 
 }
+
+
+$("#coin-select").on('change', function() {
+	console.log($(this).val())
+})
