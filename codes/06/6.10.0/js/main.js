@@ -95,8 +95,6 @@ d3.json("data/coins.json").then(theCoins => {
 	let options = {
 		target: targets[0],
 		type: types[0],
-		startDate: d3.min(coins[targets[0]], d => d.date),
-		endDate: d3.max(coins[targets[0]], d => d.date)
 	}
 
 	changeGraph(options);
@@ -119,6 +117,9 @@ function changeGraph(options) {
 	let line = d3.line()
 		.x(d => x(d.date))
 		.y(d => y(d[options.type]))
+	
+	g.selectAll('path.line')
+		.remove()
 	// add line to chart
 	g.append("path")
 		.attr("class", "line")
@@ -173,11 +174,24 @@ function changeGraph(options) {
 	
 	/******************************** Tooltip Code ********************************/
 
-
-
 }
 
-
 $("#coin-select").on('change', function() {
-	console.log($(this).val())
+		
+
+	let options = {
+		target: $(this).val(),
+		type: $('#var-select').val(),
+	}
+	changeGraph(options);
+})
+
+$("#var-select").on('change', function() {
+		
+
+	let options = {
+		target: $('#coin-select').val(),
+		type: $(this).val(),
+	}
+	changeGraph(options);
 })
