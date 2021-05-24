@@ -678,3 +678,23 @@ var result = bisect(data, 3); // result: 2
  - y축을 이동시킨후 이동시킨 축을 기점으로 또다시 이동할 때사용
  - dx도 마찬가지
  -
+
+### Data structures and D3의 nest function
+ - 데이터 양식은 여러가지가 될 수 있으며, 가공하는 것이 필요
+ - array로 온 데이터는 Key를 만들어주면 손쉽게 접근 가능하다
+```
+var array = [
+  {id: 1, value='test1'},
+  {id: 2, value='test2'},
+]
+
+# map으로 변환
+var array = {
+  '1': {id: 1, value='test1'},
+  '2': {id: 2, value='test2'},
+}
+```
+ - D3의 nest() function을 이용하면 손쉽게 데이터를 재가공 해준다
+![image](https://user-images.githubusercontent.com/22423285/119281038-ff43f400-bc6e-11eb-804a-4c677a31946c.png)
+
+
