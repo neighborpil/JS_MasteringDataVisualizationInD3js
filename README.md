@@ -678,6 +678,14 @@ var result = bisect(data, 3); // result: 2
  - y축을 이동시킨후 이동시킨 축을 기점으로 또다시 이동할 때사용
  - dx도 마찬가지
  -
+## D3 Layout
+ - 내장 함수 또는 3rd party함수로써 데이터를 그래프의 양식에 맞게 재가공해준다
+ - d3.pie() : index, angle
+ - d3.force()
+ - d3.stack() : partial data
+ - d3.treemap() : depth 추가
+ - d3.layout.cloud()
+
 
 ### Data structures and D3의 nest function
  - 데이터 양식은 여러가지가 될 수 있으며, 가공하는 것이 필요
@@ -698,3 +706,10 @@ var array = {
 ![image](https://user-images.githubusercontent.com/22423285/119281038-ff43f400-bc6e-11eb-804a-4c677a31946c.png)
 
 
+## Draw map(지형 그리는 방법)
+ - GeoJSON : A JSON object that gives us information about places
+   + D3.geoPath() 사용
+ - TopoJSON : encodes topology(how high is a part of land), smaller size
+   + TopoJSON.js 라이브러리 사용, topojson.feature(), topojson.mesh()
+   + 주로 사용
+ - 
