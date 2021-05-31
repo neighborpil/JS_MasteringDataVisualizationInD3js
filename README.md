@@ -726,8 +726,8 @@ var array = {
     var width = 600,
         height = 400;
 
-    // var projection = d3.geoConicEqualArea()    
-    var projection = d3.geoMercator()    
+    // var projection = d3.geoConicEqualArea() // 북극을 중심으로 라운드되게 보여줌
+    var projection = d3.geoMercator() // 4각형의 평면으로 보여줌
         .scale(153)
         .translate([width / 2, height / 2])        
         .precision(.1);
