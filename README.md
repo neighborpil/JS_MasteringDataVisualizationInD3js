@@ -713,3 +713,62 @@ var array = {
    + TopoJSON.js 라이브러리 사용, topojson.feature(), topojson.mesh()
    + 주로 사용
  - 
+## D3로 지도 그리는 방법
+ - json보다 tson을 더 많이 사용함
+ - 
+### json 사용 방식
+```
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<script src="//d3js.org/topojson.v2.min.js"></script>
+
+<script>
+
+    var width = 600,
+        height = 400;
+
+    // var projection = d3.geoConicEqualArea()    
+    var projection = d3.geoMercator()    
+        .scale(153)
+        .translate([width / 2, height / 2])        
+        .precision(.1);
+
+    var path = d3.geoPath()
+        .projection(projection);
+
+    var graticule = d3.geoGraticule();
+
+    var svg = d3.select("body").append("svg")
+        .attr("width", width)
+        .attr("height", height);
+
+    d3.json("data/world-110m.json").then(function(world){
+
+        console.log(world)
+        console.log(topojson.feature(world, world.objects.land))
+        console.log(graticule)
+
+        svg.append("path")
+            .datum(topojson.feature(world, world.objects.land))
+            .attr("class", "land")
+            .attr("d", path)
+
+        svg.append("path")
+            .datum(topojson.mesh(world, world.objects.countries, function(a, b){
+                return a !== b
+            }))
+            .attr("class", "boundary")
+            .attr("d", path)
+
+        svg.append("path")
+            .datum(graticule)
+            .attr("class", "graticule")
+            .attr("d", path)
+    }).catch(function(error){
+        console.log(error)
+    });
+
+    d3.select(self.frameElement).style("height", height + "px")
+
+</script>
+
+```
