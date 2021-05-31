@@ -27,9 +27,10 @@
     var width = 600,
         height = 400;
 
-    var projection = d3.geoConicEqualArea()
+    // var projection = d3.geoConicEqualArea() // 북극을 중심으로 라운드되게 보여줌
+    var projection = d3.geoMercator() // 4각형의 평면으로 보여줌
         .scale(153)
-        .translate([width / 2, height / 2])
+        .translate([width / 2, height / 2])        
         .precision(.1);
 
     var path = d3.geoPath()
@@ -41,32 +42,33 @@
         .attr("width", width)
         .attr("height", height);
 
-    d3.json("data/world-110m.json").then(function(world) {
-        if (error) throw error;
+    d3.json("data/world-110m.json").then(function(world){
 
         console.log(world)
-        console.log(topojson.feature(world, world.objects.land));
+        console.log(topojson.feature(world, world.objects.land))
         console.log(graticule)
 
         svg.append("path")
             .datum(topojson.feature(world, world.objects.land))
             .attr("class", "land")
-            .attr("d", path);
+            .attr("d", path)
 
         svg.append("path")
-            .datum(topojson.mesh(world, world.objects.countries, function(a, b) { return a !== b; }))
+            .datum(topojson.mesh(world, world.objects.countries, function(a, b){
+                return a !== b
+            }))
             .attr("class", "boundary")
-            .attr("d", path);
+            .attr("d", path)
 
         svg.append("path")
             .datum(graticule)
             .attr("class", "graticule")
-            .attr("d", path);
+            .attr("d", path)
     }).catch(function(error){
         console.log(error)
     });
 
-    d3.select(self.frameElement).style("height", height + "px");
+    d3.select(self.frameElement).style("height", height + "px")
 
 </script>
 
