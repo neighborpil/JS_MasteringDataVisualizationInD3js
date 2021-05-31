@@ -714,7 +714,7 @@ var array = {
    + 주로 사용
  - 
 ## D3로 지도 그리는 방법
- - json보다 tson을 더 많이 사용함
+ - json보다 topojson을 더 많이 사용함
  - 
 ### json 사용 방식
 ```
@@ -771,4 +771,34 @@ var array = {
 
 </script>
 
+```
+
+## D3 Queue
+ - 여러개의 파일을 읽을 때 순차적으로 읽는다
+ - 모든 파일이 로드 되면 시작한다
+ - 동시에 파일들을 읽는다
+ - D3 v5에서는 Promise를 사용한다
+```
+// d3 v3에서 사용한 방법
+d3.queue()
+  .defer(d3.json, "data/map.json")
+  .defer(d3.csv, "data/example.csv")
+  .await(function(map, example){
+    // 
+  });  
+```
+```
+// D3 v5에서 사용하는 방법
+var promises = [
+  d3.json("data/map.json"),
+  d3.csv("data/example.csv")
+]
+
+Promise.all(promises).then(function(allData){
+  var map = allData[0];
+  var example = allData[1];
+  
+}).catch(function(error){
+  console.log(error);
+});
 ```
