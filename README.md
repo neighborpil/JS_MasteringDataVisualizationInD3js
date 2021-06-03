@@ -2,6 +2,17 @@
  - Data Visualiation tool
  - CDN: <script src="https://d3js.org/d3.v6.min.js"></script>
 
+# D3 Selection
+## D3 Select
+ - grap hold of elements on the screen
+
+## D3 Append
+ - add SVGs onto your selection
+
+## D3 Attr
+ - set attributes of SVGs to make them appear on the screen
+
+
 
 ### D3 Select
  - d3.select("rect") : 모든 사각형 중 처음 나오는 것 선택
@@ -802,3 +813,10 @@ Promise.all(promises).then(function(allData){
   console.log(error);
 });
 ```
+
+
+## Choropleth Maps
+ - map 위에 지역마다 다른 점을 색깔로 나타내는 것
+![image](https://user-images.githubusercontent.com/22423285/120584986-e7891e80-c46b-11eb-929c-4411b452f20c.png)
+
+
