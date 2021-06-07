@@ -830,3 +830,22 @@ Promise.all(promises).then(function(allData){
 ![image](https://user-images.githubusercontent.com/22423285/120584986-e7891e80-c46b-11eb-929c-4411b452f20c.png)
 
 
+## d3. force layout
+ - it makes items wiggling over the map
+ - repel : 다가가지 못하게 함(pull each other)
+ - forceX forceY : very useful when grouping items
+
+![image](https://user-images.githubusercontent.com/22423285/121101118-2fc28b00-c836-11eb-9300-26e14c60e025.png)
+
+![image](https://user-images.githubusercontent.com/22423285/121101149-3c46e380-c836-11eb-80a5-c475bea70763.png)
+![image](https://user-images.githubusercontent.com/22423285/121101275-7b753480-c836-11eb-90a8-31b3ee002a85.png)
+![image](https://user-images.githubusercontent.com/22423285/121101466-dad34480-c836-11eb-9493-4eec5e36d46d.png)
+![image](https://user-images.githubusercontent.com/22423285/121101522-f50d2280-c836-11eb-8709-ef849b1f2cde.png)
+
+
+![image](https://user-images.githubusercontent.com/22423285/121101359-acee0000-c836-11eb-8054-cffb2b8aaff4.png)
+
+![image](https://user-images.githubusercontent.com/22423285/121101292-8760f680-c836-11eb-905d-a9512878a3e3.png)
+
+
+
