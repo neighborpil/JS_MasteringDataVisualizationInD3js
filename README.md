@@ -239,6 +239,16 @@ x("S.AMERICA") // "209", input을 output으로
 x.bandwidth() // 하나의 가로 간격 표시
 ```
 
+#### Threshold Scale
+ - d3.scaleThreshold( domain, range )
+ -  범위를 설정하고 그 범위 내에서의 값으로 변환하여 반환한다
+ -  기본값은 0 - 1범위에 0.5이다
+```
+    var color = d3.scaleThreshold()        
+        .domain(d3.range(2, 10))
+        .range(d3.schemeBlues[9]);
+```
+
 #### MIN, MAX and EXTENT 설정
  - domain에 모든 값들을 하나하나 설정하기 힘듬
  - min, max값으로 시작, 끝값 잡아두면 편함
