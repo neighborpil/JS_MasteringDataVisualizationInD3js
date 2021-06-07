@@ -2,6 +2,17 @@
  - Data Visualiation tool
  - CDN: <script src="https://d3js.org/d3.v6.min.js"></script>
 
+# D3 Selection
+## D3 Select
+ - grap hold of elements on the screen
+
+## D3 Append
+ - add SVGs onto your selection
+
+## D3 Attr
+ - set attributes of SVGs to make them appear on the screen
+
+
 
 ### D3 Select
  - d3.select("rect") : 모든 사각형 중 처음 나오는 것 선택
@@ -226,6 +237,16 @@ const y = d3.scaleBand()
 
 x("S.AMERICA") // "209", input을 output으로
 x.bandwidth() // 하나의 가로 간격 표시
+```
+
+#### Threshold Scale
+ - d3.scaleThreshold( domain, range )
+ -  범위를 설정하고 그 범위 내에서의 값으로 변환하여 반환한다
+ -  기본값은 0 - 1범위에 0.5이다
+```
+    var color = d3.scaleThreshold()        
+        .domain(d3.range(2, 10))
+        .range(d3.schemeBlues[9]);
 ```
 
 #### MIN, MAX and EXTENT 설정
@@ -802,3 +823,10 @@ Promise.all(promises).then(function(allData){
   console.log(error);
 });
 ```
+
+
+## Choropleth Maps
+ - map 위에 지역마다 다른 점을 색깔로 나타내는 것
+![image](https://user-images.githubusercontent.com/22423285/120584986-e7891e80-c46b-11eb-929c-4411b452f20c.png)
+
+
