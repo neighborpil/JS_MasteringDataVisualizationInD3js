@@ -222,6 +222,21 @@ const y = d3.scaleOrdinal()
 color("ASIA") // "#9467bc"
 ```
 
+##### ※ d3-scale-chromatic
+ - 다양한 색깔 조합 사용가능하게 해줌
+```
+<script src="https://cdn.jsdelivr.net/npm/d3-color@3"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3-interpolate@3"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3-scale-chromatic@3"></script>
+<script>
+
+const yellow = d3.interpolateYlGn(0); // "rgb(255, 255, 229)"
+const yellowGreen = d3.interpolateYlGn(0.5); // "rgb(120, 197, 120)"
+const green = d3.interpolateYlGn(1); // "rgb(0, 69, 41)"
+
+</script>
+```
+
 #### Band Scales
  - 아이템의 개수에 따라 가로의 간격을 조절
  - PaddingInner: 0 ~ 1.0
