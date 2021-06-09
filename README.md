@@ -222,6 +222,21 @@ const y = d3.scaleOrdinal()
 color("ASIA") // "#9467bc"
 ```
 
+##### ※ d3-scale-chromatic
+ - 다양한 색깔 조합 사용가능하게 해줌
+```
+<script src="https://cdn.jsdelivr.net/npm/d3-color@3"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3-interpolate@3"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3-scale-chromatic@3"></script>
+<script>
+
+const yellow = d3.interpolateYlGn(0); // "rgb(255, 255, 229)"
+const yellowGreen = d3.interpolateYlGn(0.5); // "rgb(120, 197, 120)"
+const green = d3.interpolateYlGn(1); // "rgb(0, 69, 41)"
+
+</script>
+```
+
 #### Band Scales
  - 아이템의 개수에 따라 가로의 간격을 조절
  - PaddingInner: 0 ~ 1.0
@@ -830,3 +845,124 @@ Promise.all(promises).then(function(allData){
 ![image](https://user-images.githubusercontent.com/22423285/120584986-e7891e80-c46b-11eb-929c-4411b452f20c.png)
 
 
+## d3. force layout
+ - it makes items wiggling over the map
+ - repel : 다가가지 못하게 함(pull each other)
+ - forceX forceY : very useful when grouping items
+
+![image](https://user-images.githubusercontent.com/22423285/121101118-2fc28b00-c836-11eb-9300-26e14c60e025.png)
+
+![image](https://user-images.githubusercontent.com/22423285/121101149-3c46e380-c836-11eb-80a5-c475bea70763.png)
+![image](https://user-images.githubusercontent.com/22423285/121101275-7b753480-c836-11eb-90a8-31b3ee002a85.png)
+![image](https://user-images.githubusercontent.com/22423285/121101466-dad34480-c836-11eb-9493-4eec5e36d46d.png)
+![image](https://user-images.githubusercontent.com/22423285/121101522-f50d2280-c836-11eb-8709-ef849b1f2cde.png)
+
+
+![image](https://user-images.githubusercontent.com/22423285/121101359-acee0000-c836-11eb-8054-cffb2b8aaff4.png)
+
+![image](https://user-images.githubusercontent.com/22423285/121101292-8760f680-c836-11eb-905d-a9512878a3e3.png)
+
+
+ - 예제 코드
+```
+<body>
+
+    <nav class="navbar navbar-default"></nav>
+    <svg width="600" height="600"></svg>
+
+<script src="https://d3js.org/d3.v5.min.js"></script>
+
+<script>
+
+var svg = d3.select('svg')
+    width = svg.attr('width')
+    height = svg.attr('height');
+
+var color = d3.scaleOrdinal(d3.schemeCategory10)
+
+// Add "forces" to the simulation here
+var simulation = d3.forceSimulation()
+    .force('center', d3.forceCenter(width / 2, height / 2)) 
+    .force('charge', d3.forceManyBody().strength(-50)) // repel each other
+    .force('collide', d3.forceCollide(10).strength(0.9))
+    .force('link', d3.forceLink().id(function(d) { return d.id; }));
+
+d3.json('data/force.json').then(function(graph){
+
+    console.log(graph.links)
+
+    // Add lines for every link in the dataset
+    var link = svg.append('g')
+        .attr('class', 'links')
+        .selectAll('line')
+        .data(graph.links)
+        .enter().append('line')
+            .attr('stroke-width', function(d) { return Math.sqrt(d.value); }) // 라인이 너무 굵어지는것 막음
+
+        // Add circles for every node in the dataset
+        var node = svg.append('g')
+            .attr('class', 'nodes')
+            .selectAll('circle')
+            .data(graph.nodes)
+            .enter().append('circle')
+                .attr('r', 5)
+                .attr('fill', function(d) { return color(d.group); })
+                .cal음(d3.drag()
+                    .on('start', dragstarted)
+                    .on('drag', dragged)
+                    .on('end', dragended));
+
+        // Basic tooltips
+        node.append('title')
+            .text(function(d){ return d.id; })
+
+        // Attach nodes to the simulation, add listener on the "tick" event
+        simulation
+            .nodes(graph.nodes)
+            .on('tick', ticked)
+
+        // Associate the lines with the "link" force
+        simulation.force('link')
+            .links(graph.links)
+            
+        // Dynamically update the position of the nodes/links as time passes
+        function ticked() {
+            link
+                .attr('x1', (d) => d.source.x)
+                .attr('y1', (d) => d.source.y)
+                .attr('x2', (d) => d.target.x)
+                .attr('y2', (d) => d.target.y);
+
+            node
+                .attr('cx', (d) => d.x)
+                .attr('cy', (d) => d.y);
+        }
+
+}).catch(function(error) {
+    console.log(error);
+})
+
+// Change the value of alpha, so things move around when we drag a node
+function dragstarted(d) {
+    if(!d3.event.active)
+        simulation.alphaTarget(0.7).restart(); // 처음 시작하면 alpha값이 1에서 0으로 떨어지며 움직임이 서서히 멈춘다
+    d.fx = d.x;                                // 드래그를 시자하면 0.7부터 시작하여 움직이고
+    d.fy = d.y;                                // 드래그 종료(dragended)에서 0으로 alpha값이 변하며 움직임을 멈춘다
+}
+
+// Fix the position of the node that we are looking at
+function dragged(d) {
+    d.fx = d3.event.x;
+    d.fy = d3.event.y;
+}
+
+// Let the node do what it wants again once we've looked at it
+function dragended(d) {
+    if(!d3.event.active)
+        simulation.alphaTarget(0);
+    d.fx = null;
+    d.fy = null;
+}
+</script>
+</body>
+```
