@@ -863,4 +863,106 @@ Promise.all(promises).then(function(allData){
 ![image](https://user-images.githubusercontent.com/22423285/121101292-8760f680-c836-11eb-905d-a9512878a3e3.png)
 
 
+ - 예제 코드
+```
+<body>
 
+    <nav class="navbar navbar-default"></nav>
+    <svg width="600" height="600"></svg>
+
+<script src="https://d3js.org/d3.v5.min.js"></script>
+
+<script>
+
+var svg = d3.select('svg')
+    width = svg.attr('width')
+    height = svg.attr('height');
+
+var color = d3.scaleOrdinal(d3.schemeCategory10)
+
+// Add "forces" to the simulation here
+var simulation = d3.forceSimulation()
+    .force('center', d3.forceCenter(width / 2, height / 2)) 
+    .force('charge', d3.forceManyBody().strength(-50)) // repel each other
+    .force('collide', d3.forceCollide(10).strength(0.9))
+    .force('link', d3.forceLink().id(function(d) { return d.id; }));
+
+d3.json('data/force.json').then(function(graph){
+
+    console.log(graph.links)
+
+    // Add lines for every link in the dataset
+    var link = svg.append('g')
+        .attr('class', 'links')
+        .selectAll('line')
+        .data(graph.links)
+        .enter().append('line')
+            .attr('stroke-width', function(d) { return Math.sqrt(d.value); }) // 라인이 너무 굵어지는것 막음
+
+        // Add circles for every node in the dataset
+        var node = svg.append('g')
+            .attr('class', 'nodes')
+            .selectAll('circle')
+            .data(graph.nodes)
+            .enter().append('circle')
+                .attr('r', 5)
+                .attr('fill', function(d) { return color(d.group); })
+                .cal음(d3.drag()
+                    .on('start', dragstarted)
+                    .on('drag', dragged)
+                    .on('end', dragended));
+
+        // Basic tooltips
+        node.append('title')
+            .text(function(d){ return d.id; })
+
+        // Attach nodes to the simulation, add listener on the "tick" event
+        simulation
+            .nodes(graph.nodes)
+            .on('tick', ticked)
+
+        // Associate the lines with the "link" force
+        simulation.force('link')
+            .links(graph.links)
+            
+        // Dynamically update the position of the nodes/links as time passes
+        function ticked() {
+            link
+                .attr('x1', (d) => d.source.x)
+                .attr('y1', (d) => d.source.y)
+                .attr('x2', (d) => d.target.x)
+                .attr('y2', (d) => d.target.y);
+
+            node
+                .attr('cx', (d) => d.x)
+                .attr('cy', (d) => d.y);
+        }
+
+}).catch(function(error) {
+    console.log(error);
+})
+
+// Change the value of alpha, so things move around when we drag a node
+function dragstarted(d) {
+    if(!d3.event.active)
+        simulation.alphaTarget(0.7).restart(); // 처음 시작하면 alpha값이 1에서 0으로 떨어지며 움직임이 서서히 멈춘다
+    d.fx = d.x;                                // 드래그를 시자하면 0.7부터 시작하여 움직이고
+    d.fy = d.y;                                // 드래그 종료(dragended)에서 0으로 alpha값이 변하며 움직임을 멈춘다
+}
+
+// Fix the position of the node that we are looking at
+function dragged(d) {
+    d.fx = d3.event.x;
+    d.fy = d3.event.y;
+}
+
+// Let the node do what it wants again once we've looked at it
+function dragended(d) {
+    if(!d3.event.active)
+        simulation.alphaTarget(0);
+    d.fx = null;
+    d.fy = null;
+}
+</script>
+</body>
+```
