@@ -40,7 +40,7 @@
     d3.json("data/force.json", function(error, graph) {
         if (error) throw error;
 
-        console.log(graph);
+        console.log(graph.links);
 
         // Add lines for every link in the dataset
         var link = svg.append("g")
