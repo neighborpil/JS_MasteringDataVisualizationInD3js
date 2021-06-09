@@ -966,3 +966,17 @@ function dragended(d) {
 </script>
 </body>
 ```
+
+## Hirarchical Data
+ - 용어 정리
+![image](https://user-images.githubusercontent.com/22423285/121443375-5c0e1100-c9c8-11eb-9c03-9695ee0ac63f.png)
+
+### D3 Hirarchy
+ - d3.hierarchy(data[, children])
+![image](https://user-images.githubusercontent.com/22423285/121443514-95468100-c9c8-11eb-8c07-fa51e69ffce6.png)
+
+### D3 Stratify
+ - d3.stratify()
+ - 데이터를 계층화시켜준다
+![image](https://user-images.githubusercontent.com/22423285/121443572-b4dda980-c9c8-11eb-9318-6ced30c89c53.png)
+
