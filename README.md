@@ -77,6 +77,20 @@ holder.append("circle")        // attach a circle
     .attr("cy", 100)           // position the y-center
     .attr("r", 50);            // set the radius
 ```
+#### 7. Text
+ - .attr('dy', '.35em') : y위치로부터의 오프셋
+```
+holder.append("text")         // append text
+    .style("fill", "black")   // fill the text with the colour black
+    .attr("x", 200)           // set x position of left side of text
+    .attr("y", 100)           // set y position of bottom of text
+    .attr("dy", ".35em")           // set offset y position
+    .attr("text-anchor", "middle") // set anchor y justification
+    .attr("transform", "rotate(10)")
+    .text("Hello World");          // define the text to displ
+```
+
+
 ### D3 Append
  - element가 선택이 되면 child 노드를 append하는 것이 가능하다
  - 선택한 elementdml attribute를 변경하는 것이 가능하다
@@ -966,3 +980,17 @@ function dragended(d) {
 </script>
 </body>
 ```
+
+## Hirarchical Data
+ - 용어 정리
+![image](https://user-images.githubusercontent.com/22423285/121443375-5c0e1100-c9c8-11eb-9c03-9695ee0ac63f.png)
+
+### D3 Hirarchy
+ - d3.hierarchy(data[, children])
+![image](https://user-images.githubusercontent.com/22423285/121443514-95468100-c9c8-11eb-8c07-fa51e69ffce6.png)
+
+### D3 Stratify
+ - d3.stratify()
+ - 데이터를 계층화시켜준다
+![image](https://user-images.githubusercontent.com/22423285/121443572-b4dda980-c9c8-11eb-9318-6ced30c89c53.png)
+
