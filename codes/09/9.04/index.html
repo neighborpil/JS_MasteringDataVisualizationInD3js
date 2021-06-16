@@ -43,35 +43,38 @@ var fader = color => d3.interpolateRgb(color, '#fff')(0.2),
     format = d3.format(",d");
 
 var treemap = d3.treemap()
-    .tile(d3.treemapResquarify)
-    .size([width, height])
-    .round(true)
-    .paddingInner(1);
+    .tile(d3.treemapResquarify) // .tile(A) means d3 will use space out using A type
+    .size([width, height]) // set the hight and width of treemap
+    .round(true) // all values should be integer
+    .paddingInner(1); // give little bit of space between each of different rectangles
 
 d3.json('data/treemap.json').then(data => {
     console.log(data);
 
+    console.log(d3.hierarchy(data)) // sort data hierarchically and add dept height, parent, children
+
     // Since we are dealing with hierarchical data, need to convert the data to the right format
     var root =d3.hierarchy(data)
-        .eachBefore(d => d.data.id = (d.parent ? `${d.parent.data.id}.` : ''))
-        .sum(sumBySize)
+        .eachBefore(d => d.data.id = (d.parent ? `${d.parent.data.id}.` : '')) // set every element an Id
+        .sum(sumBySize) // calculate size of each node
         .sort((a, b) => b.height - a.height || b.value - a.value);
 
-    // Computes x0, x1, y0, and y1 for each node (where the rectangles should be)
-    treemap(root);
-    console.log(root);
+    console.log(treemap(root).leaves())
 
+    // Computes x0, x1, y0, and y1 for each node (where the rectangles should be)
+    treemap(root); // transforming to treemap
+    
     var cell = svg.selectAll('g')
-        .data(root.leaves())
+        .data(root.leaves()) // join data
         .enter().append('g')
-            .attr('transform', d => `translate(${d.x0},${d.y0})`);
+            .attr('transform', d => `translate(${d.x0},${d.y0})`); // move rect location to x0 and y0
 
     // Add rectanges for each of the boxes that were generated
     cell.append('rect')
         .attr('id', d => d.data.id)
-        .attr('width', d => d.x1 - d.x0)
-        .attr('height', d => d.y1 - d.y0)
-        .attr('fill', d => color(d.parent.data.id));
+        .attr('width', d => d.x1 - d.x0) // set rect width to x1 - x0
+        .attr('height', d => d.y1 - d.y0) // set rect height to y1 - y0
+        .attr('fill', d => color(d.parent.data.id)); // set color depending on it's parent
 
     // Make sure that text labels don't overflow into adjacent boxes
     cell.append('clipPath')
@@ -88,6 +91,30 @@ d3.json('data/treemap.json').then(data => {
             .attr('x', 4)
             .attr('y', (d, i) => 13 + i * 10)
             .text(d => d);
+
+    // Simple way to make tooltips
+    cell.append('title')
+        .text(d => `${d.data.id}\n${format(d.value)}`);
+
+    // Add an input to select between different summing methods
+    d3.selectAll('input')
+        .data([sumBySize, sumByCount], function(d) {
+            return d ? d.name : this.value; // I don't know why I can't use lamda
+        })
+        .on('change', changed)
+
+    function changed(sum) {
+        // Give the treemap a new root, which uses a different summing function
+        treemap(root.sum(sum));
+
+        // Update the size and position of each of the rectangles
+        cell.transition().duration(750)
+            .attr('transform', d => `translate(${d.x0},${d.y0})`)
+            .select('rect')
+                .attr('width', d => d.x1 - d.x0)
+                .attr('height', d => d.y1 - d.y0)
+    }
+
 
 }).catch(error => {
     console.log(error);
