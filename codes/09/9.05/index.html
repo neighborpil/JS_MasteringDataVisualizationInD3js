@@ -36,7 +36,7 @@ var color = d3.scaleSequential(d3.interpolateMagma)
 
 // Stratify converts the data into the correct format
 var stratify = d3.stratify()
-    .parentId(function(d) { return d.id.substring(0, d.id.lastIndexOf('.'))});
+    .parentId(d => d.id.substring(0, d.id.lastIndexOf('.')));
 
 // Similar to how d3.treemap looks
 var pack = d3.pack()
@@ -60,7 +60,7 @@ d3.csv('data/pack.csv').then(data => {
         .enter().append('g')
             .attr('transform', d => `translate(${d.x}, ${d.y})`)
             .attr('class', d => `node${!d.children ? ' node--leaf' : d.depth ? '' : ' node--root'}`)
-            .each(d => d.node = this)
+            .each(function(d) { d.node = this; }) // don't change to lamda format
             .on('mouseover', hovered(true))
             .on('mouseout', hovered(false));
 
@@ -97,7 +97,7 @@ d3.csv('data/pack.csv').then(data => {
 
 function hovered(hover) {
     return function(d) {
-        d3.selectAll(d.ancestors().map(d => d.node)).classed('node--hover', hover);
+        d3.selectAll(d.ancestors().map(d => d.node)).classed("node--hover", hover);
     }
 }
 </script>
