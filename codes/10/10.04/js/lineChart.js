@@ -130,6 +130,66 @@ class LineChart {
 		vis.g.select('.focus').remove();
 		vis.g.select('.overlay').remove();
 
+		/******************************** Tooltip Code Start ********************************/
 		
+		vis.focus = vis.g.append('g')
+			.attr('class', 'focus')
+			.style('display', 'none');
+
+		vis.focus.append('line')
+			.attr('class', 'x-hover-line hover-line')
+			.attr('y1', 0)
+			.attr('y2', vis.HEIGHT);
+
+		vis.focus.append('line')
+			.attr('class', 'y-hover-line hover-line')
+			.attr('x1', 0)
+			.attr('x2', vis.WIDTH);
+
+		vis.focus.append('circle')
+			.attr('r', 7.5);
+
+		vis.focus.append('text')
+			.attr('x', 15)
+			.attr('dy', '.31em');
+
+		vis.g.append('rect')
+			.attr('class', 'overlay')
+			.attr('width', vis.WIDTH)
+			.attr('height', vis.HEIGHT)
+			.on('mouseover', () => vis.focus.style('display', null))
+			.on('mouseout', () => vis.focus.style('display', 'none'))
+			.on('mousemove', mousemove);
+
+		function mousemove() {
+			const x0 = vis.x.invert(d3.mouse(this)[0]);
+			const i = vis.bisectDate(vis.dataTimeFiltered, x0, 1);
+			const d0 = vis.dataTimeFiltered[i - 1];
+			const d1 = vis.dataTimeFiltered[i];
+			const d = x0 - d0.date > d1.date - x0 ? d1 : d0;
+			vis.focus.attr('transform', `translate(${vis.x(d.date)}, ${vis.y(d[vis.yValue])})`);
+			vis.focus.select('text').text(d[vis.yValue]);
+			vis.focus.select('.x-hover-line').attr('y2', vis.HEIGHT - vis.y(d[vis.yValue]));
+			vis.focus.select('.y-hover-line').attr('x2', -vis.x(d.date));
+		}
+
+		/******************************** Tooltip Code End ********************************/
+
+		// Path generator
+		vis.line = d3.line()
+		.x(d => vis.x(d.date))
+		.y(d => vis.y(d[vis.yValue]));
+
+		// Update our line path
+		vis.g.select('.line')
+			.transition(vis.t)
+			.attr('d', vis.line(vis.dataTimeFiltered));
+
+		// Update y-axis label
+		const newText = (vis.yValue === 'price_usd') ? 'Price ($)'
+			: (vis.yValue === 'market_cap') ? 'Market Capitalization ($)'
+				: '24 Hour Trading Volume ($)';
+
+		vis.yLabel.text(newText);
 	}
 }
